@@ -12,24 +12,30 @@ const PeopleList = ({ data, node_id, title }: ItemType): JSX.Element => {
 	return (
 		<div
 			className={
-				"flex flex-col w-[inherit] items-center md:w-fit md:max-h-[33vh] md:overflow-y-scroll md:pr-4"
+				"grid grid-cols-3 gap-1 mobile:grid-cols-2   xl:grid-cols-4 xl:gap-1 items-center hmd:w-fit hmd:max-h-[33vh] hmd:overflow-y-auto hmd:pr-4 py-5 hmd:py-0"
 			}
 			id={node_id}
 		>
-			<ul className="flex flex-col items-start w-[75vw] md:w-auto font-sans text-sm hmd:text-base">
-				{dataArray.map((userRow, index) => (
-					<li key={index} className={"flex items-center py-2"}>
-						<span className="max-w-[48px]">
+			{dataArray.map((userRow, index) => (
+				<div
+					key={index}
+					className={"py-2 px-2 w-full rounded-t-lg border-gray-600 "}
+				>
+					<button
+						type="button"
+						className=" min-w-[110px] inline-flex relative items-center py-2 px-2 w-full text-sm font-medium rounded-lg border border-gray-600 hover:bg-gray-600 hover:text-white focus:ring-gray-500 focus:text-white"
+					>
+						<span className="w-[36px] mr-2">
 							<img
 								src={userRow.avatar}
 								alt={userRow.name}
 								className={"rounded-full"}
 							></img>
 						</span>
-						<div className=" pl-4">{userRow.name}</div>
-					</li>
-				))}
-			</ul>
+						{userRow.name}
+					</button>
+				</div>
+			))}
 		</div>
 	);
 };

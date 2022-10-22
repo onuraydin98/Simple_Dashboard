@@ -1,13 +1,10 @@
 import React from "react";
-
 import { Bar } from "react-chartjs-2";
 import type { ItemType, PullRequestType } from "../../models/dashboard.server";
 import type { ChartData, ChartOptions } from "chart.js";
 
 const BarChart = ({ data, node_id, title }: ItemType): JSX.Element => {
 	data = (data as PullRequestType[]).sort((a, b) => (a.date > b.date ? 1 : -1));
-
-	//console.log("sorted data", data);
 
 	const values: number[] = [];
 	let labels = data.map((datum) => {
@@ -23,16 +20,24 @@ const BarChart = ({ data, node_id, title }: ItemType): JSX.Element => {
 		plugins: {
 			legend: {
 				position: "top" as const,
+				labels: {
+					color: "#e2e8f0",
+				},
 			},
 			title: {
 				display: true,
 				text: title,
+				color: "#e2e8f0",
 			},
 		},
 		scales: {
 			y: {
 				min: values[0] - 2,
 				max: values[values.length - 1] + 2,
+				ticks: { color: "#e2e8f0" },
+			},
+			x: {
+				ticks: { color: "#e2e8f0" },
 			},
 		},
 	};
@@ -43,9 +48,9 @@ const BarChart = ({ data, node_id, title }: ItemType): JSX.Element => {
 			{
 				label: "Data",
 				data: labels.map((e, idx) => values[idx]),
-				backgroundColor: "#FFBB92",
+				backgroundColor: "#0f172a",
+				hoverBackgroundColor: "rgba(15, 23, 42, 0.5)",
 				barPercentage: 0.3,
-				hoverBackgroundColor: "rgba(255, 187, 146, 0.6)",
 				borderRadius: 2,
 				minBarLength: 80,
 			},
@@ -54,7 +59,7 @@ const BarChart = ({ data, node_id, title }: ItemType): JSX.Element => {
 
 	return (
 		<div
-			className="w-[75vw] min-w-[350px] max-w-[650px] md:w-auto "
+			className="w-[90vw] min-w-[350px] hmd:w-auto py-5 hmd:py-0"
 			id={node_id}
 		>
 			<Bar options={options} data={chartData} id={"1"} />

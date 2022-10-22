@@ -5,10 +5,15 @@ module.exports = {
   ],
   theme: {
     screens: {
+      'mobile': {
+        'max': '450px'
+      },
+      // => @media (max-width: 450px) { ... }
+
       'xs': {
         'max': '570px'
       },
-      // => @media (min-width: 540px) { ... }
+      // => @media (max-width: 540px) { ... }
 
       'sm': '640px',
       // => @media (min-width: 640px) { ... }
@@ -16,8 +21,8 @@ module.exports = {
       'md': '768px',
       // => @media (min-width: 768px) { ... }
 
-      'hmd': '850px',
-      // => @media (min-width: 866px) { ... }
+      'hmd': '860px',
+      // => @media (min-width: 860px) { ... }
 
       'lg': '1024px',
       // => @media (min-width: 1024px) { ... }

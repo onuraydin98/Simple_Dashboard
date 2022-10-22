@@ -27,7 +27,7 @@ export default function App() {
 				<Meta />
 				<Links />
 			</head>
-			<body className=" bg-gradient-to-r from-gray-100 to-gray-300 font-sans">
+			<body className=" antialiased text-slate-400  bg-slate-700 font-sans">
 				<Outlet />
 				<ScrollRestoration />
 				<Scripts />

@@ -48,12 +48,12 @@ const matchFunction = (itemData: ItemType): JSX.Element | null => {
 		return label == itemData.component;
 	});
 
-	//console.log(itemData);
-
+	// Type escaping
 	if (!pair) return null;
 
 	let [, Comp] = pair;
 
+	// Dynamically
 	return (
 		<Comp
 			node_id={itemData.node_id}
@@ -72,10 +72,7 @@ export default function Index() {
 			{" "}
 			{/*w-screen not used here cuz of empty blank space occuring in responsive design */}
 			<div className="flex justify-center w-full p-5">
-				<div
-					className="flex flex-col items-center w-full md:grid md:grid-cols-2 md:gap-4 md:px-5"
-					// "flex items-center flex-col w-full xs:w-fit"
-				>
+				<div className="flex flex-col items-center w-full hmd:grid hmd:grid-cols-2 hmd:gap-8 hmd:px-5">
 					{data.map((e) =>
 						e.items.map((itemData, idx) => {
 							return matchFunction(itemData);
