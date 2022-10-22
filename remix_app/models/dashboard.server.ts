@@ -7,31 +7,32 @@ export type ItemType = {
 	node_id: string;
 	title: string;
 	data: dataType[];
-	component: string;
+	component?: string;
 };
 
+// Data Types for components
 export type dataType =
 	| PullRequestType
 	| CycleTimeType
 	| PeopleType
-	| Array<StatisticsType>;
+	| StatisticsType;
 
-type PullRequestType = {
-	data: Number;
+export type PullRequestType = {
+	data: number;
 	date: string;
 };
 
-type CycleTimeType = {
-	data: Number;
+export type CycleTimeType = {
+	data: number;
 	date: string;
 };
 
-type PeopleType = {
+export type PeopleType = {
 	name: string;
 	avatar: string;
 };
 
-type StatisticsType = {
+export type StatisticsType = {
 	label: string;
 	data: string;
 };

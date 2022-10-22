@@ -1,40 +1,87 @@
 import { json } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
-import { Data, getData } from "../../models/dashboard.server";
+import { useLoaderData } from "@remix-run/react";
+import type { Data, ItemType } from "../../models/dashboard.server";
+import { getData } from "../../models/dashboard.server";
 import StatisticsBox from "../components/StatisticsBox";
 import MetricBox from "../components/MetricBox";
 import PeopleList from "../components/PeopleList";
 import BarChart from "../components/BarChart";
 import React from "react";
+import {
+	Chart as ChartJS,
+	CategoryScale,
+	LinearScale,
+	LineElement,
+	BarElement,
+	Title,
+	Tooltip,
+	Legend,
+	PointElement,
+} from "chart.js";
 
-// type LoaderData = {
-// 	// this is a handy way to say: "posts is whatever type getPosts resolves to"
-// 	dashboardData: Awaited<ReturnType<typeof getData>>;
-// };
+ChartJS.register(
+	CategoryScale,
+	LinearScale,
+	BarElement,
+	PointElement,
+	LineElement,
+	Title,
+	Tooltip,
+	Legend
+);
 
 export const loader = async (): Promise<Array<Data>> => {
 	return await getData();
 };
 
-export default function Index() {
-	const data = useLoaderData<typeof loader>();
-	console.log("data", data);
+//
+
+const components: [string, (item: ItemType) => JSX.Element][] = [
+	["BarChart", BarChart],
+	["StatisticsBox", StatisticsBox],
+	["MetricBox", MetricBox],
+	["PeopleList", PeopleList],
+];
+
+const matchFunction = (itemData: ItemType): JSX.Element | null => {
+	let pair = components.find(([label, Comp]) => {
+		return label == itemData.component;
+	});
+
+	//console.log(itemData);
+
+	if (!pair) return null;
+
+	let [, Comp] = pair;
+
 	return (
-		<main className="relative min-h-screen bg-red-50 sm:flex sm:items-center sm:justify-center">
-			<div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
-				<h1>Welcome to Remix</h1>
-				<BarChart />
-				<ul>
+		<Comp
+			node_id={itemData.node_id}
+			title={itemData.title}
+			data={itemData.data}
+		/>
+	);
+};
+
+export default function Index() {
+	const data = useLoaderData() as Data[];
+	console.log("data", data);
+
+	return (
+		<main className="relative min-h-screen flex items-center justify-center w-[98vw]">
+			{" "}
+			{/*w-screen not used here cuz of empty blank space occuring in responsive design */}
+			<div className="flex justify-center w-full p-5">
+				<div
+					className="flex flex-col items-center w-full md:grid md:grid-cols-2 md:gap-4 md:px-5"
+					// "flex items-center flex-col w-full xs:w-fit"
+				>
 					{data.map((e) =>
-						e.items.map((itemData, idx) => (
-							<li key={"itemdata_" + idx}>
-								<div>{itemData.node_id}</div>
-								<div>{itemData.title}</div>
-								<div>{itemData.component}</div>
-							</li>
-						))
+						e.items.map((itemData, idx) => {
+							return matchFunction(itemData);
+						})
 					)}
-				</ul>
+				</div>
 			</div>
 		</main>
 	);
