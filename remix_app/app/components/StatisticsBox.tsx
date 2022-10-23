@@ -11,7 +11,10 @@ const StatisticsBox = ({ data, node_id, title }: ItemType): JSX.Element => {
 		.reverse();
 
 	return (
-		<div className="relative rounded-xl overflow-hidden bg-slate-800/50 w-full hmd:w-auto my-5 hmd:my-0">
+		<div
+			className="relative rounded-xl overflow-hidden bg-slate-800/50 w-full hmd:w-auto my-5 hmd:my-0"
+			id={node_id}
+		>
 			<div className="relative rounded-xl overflow-auto">
 				<div className="border-b border-slate-700 p-4 pl-8 text-slate-100 font-medium text-left bg-slate-800">
 					{title}

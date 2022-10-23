@@ -1,4 +1,4 @@
-import { json } from "@remix-run/node";
+import { json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import type { Data, ItemType } from "../../models/dashboard.server";
 import { getData } from "../../models/dashboard.server";
@@ -19,6 +19,7 @@ import {
 	PointElement,
 } from "chart.js";
 
+// For charts, registering
 ChartJS.register(
 	CategoryScale,
 	LinearScale,
@@ -30,12 +31,11 @@ ChartJS.register(
 	Legend
 );
 
-export const loader = async (): Promise<Array<Data>> => {
+export const loader: LoaderFunction = async () => {
 	return await getData();
 };
 
-//
-
+// Components List
 const components: [string, (item: ItemType) => JSX.Element][] = [
 	["BarChart", BarChart],
 	["StatisticsBox", StatisticsBox],
@@ -43,19 +43,19 @@ const components: [string, (item: ItemType) => JSX.Element][] = [
 	["PeopleList", PeopleList],
 ];
 
-const matchFunction = (itemData: ItemType): JSX.Element | null => {
-	let pair = components.find(([label, Comp]) => {
+const matchComponents = (itemData: ItemType): JSX.Element | null => {
+	let pair = components.find(([label, Node]) => {
 		return label == itemData.component;
 	});
 
-	// Type escaping
+	// Null condition check
 	if (!pair) return null;
 
-	let [, Comp] = pair;
+	let [, Node] = pair;
 
-	// Dynamically
+	// Selecting components
 	return (
-		<Comp
+		<Node
 			node_id={itemData.node_id}
 			title={itemData.title}
 			data={itemData.data}
@@ -65,18 +65,19 @@ const matchFunction = (itemData: ItemType): JSX.Element | null => {
 
 export default function Index() {
 	const data = useLoaderData() as Data[];
-	console.log("data", data);
 
 	return (
 		<main className="relative min-h-screen flex items-center justify-center w-[98vw]">
 			{" "}
 			{/*w-screen not used here cuz of empty blank space occuring in responsive design */}
 			<div className="flex justify-center w-full p-5">
-				<div className="flex flex-col items-center w-full hmd:grid hmd:grid-cols-2 hmd:gap-8 hmd:px-5">
+				<div className="flex flex-col items-center hmd:items-baseline w-full hmd:grid hmd:grid-cols-2 hmd:gap-8 hmd:px-5">
 					{data.map((e) =>
-						e.items.map((itemData, idx) => {
-							return matchFunction(itemData);
-						})
+						e.items.map((itemData, idx) => (
+							<div key={idx} className="w-full">
+								{matchComponents(itemData)}
+							</div>
+						))
 					)}
 				</div>
 			</div>
