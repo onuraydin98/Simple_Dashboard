@@ -44,19 +44,20 @@ const setCharAt = (str: string, index: number, chr: string): string => {
 
 export async function getData() {
 	let res = await fetch(
-		"https://gist.githubusercontent.com/erdinc/78dbb3faa55342918a2c90ca4f49e095/raw/8a6ba86ce16703de24387d53e49fcfcf455fb6ea/dashboard.json"
+		"https://api.github.com/gists/78dbb3faa55342918a2c90ca4f49e095"
 	).then((res) => {
-		return res.text();
+		return res.json();
 	});
 
-	//Fixing text file for JSON.parse
-	const barChart = res.search(`"BarChart"`);
-	const statisticsBox = res.search(`"StatisticsBox"`);
+	let contentText = res.files["dashboard.json"].content;
 
-	res = setCharAt(res, barChart + 10, "");
-	res = setCharAt(res, statisticsBox + 14, "");
-	res = JSON.parse(res);
+	//Fixing text file for JSON.parse, due to unexpected commas in content file.
+	const barChart = contentText.search(`"BarChart"`);
+	const statisticsBox = contentText.search(`"StatisticsBox"`);
 
-	// JSON.parse returning any type that's why function force this type.
-	return res as unknown as Array<Data>;
+	contentText = setCharAt(contentText, barChart + 10, "");
+	contentText = setCharAt(contentText, statisticsBox + 14, "");
+	const resultJSON = JSON.parse(contentText);
+	
+	return resultJSON;
 }
