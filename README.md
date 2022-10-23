@@ -18,3 +18,4 @@ Some conflicts and updates about project:
 - Google Chrome shows project's responsiveness properly
 - In fetch function I needed to modify provided JSON file, because JSON.parse did not work properly due to the extra commas. Please be aware when you changing JSON file. You can see comment about that in "models => dashboard.server.tsx"
 - Grid system is used in the project for responsive design, (much more control for different screen sizes)
+- UI updated when user refresh the site.
