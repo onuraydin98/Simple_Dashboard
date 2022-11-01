@@ -1,6 +1,3 @@
-# iftrue_project
-Iftrue Frontend Project
-
 Hello, please be sure read carefully below explanations before starting project =>
 
 How to run project properly:
